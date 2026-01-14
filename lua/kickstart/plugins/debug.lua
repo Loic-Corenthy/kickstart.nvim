@@ -95,8 +95,59 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'codelldb',
       },
     }
+
+    -- 2. Configure the Adapter (codelldb)
+    -- This tells nvim-dap how to talk to the debugger
+    dap.adapters.codelldb = {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        -- POINT THIS TO YOUR MASO INSTALL PATH
+        -- usually: ~/.local/share/nvim/mason/bin/codelldb
+        command = vim.fn.stdpath 'data' .. 'mason/bin/codelldb',
+        args = { '--port', '${port}' },
+      },
+    }
+
+    -- 3. Configure the Launch Configurations
+    -- This tells nvim-dap how to launch your specific C++ executable
+    dap.configurations.cpp = {
+      {
+        name = 'Launch file',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          -- Ask for the executable path (defaults to current file name without extension)
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+      },
+    }
+
+    -- Reuse the C++ config for C and Rust
+    dap.configurations.c = dap.configurations.cpp
+    -- dap.configurations.rust = dap.configurations.cpp
+
+    -- 4. Setup the UI
+    dapui.setup()
+
+    -- Auto-open/close the UI when debugging starts/ends
+    dap.listeners.before.attach.dapui_config = function()
+      dapui.open()
+    end
+    dap.listeners.before.launch.dapui_config = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated.dapui_config = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited.dapui_config = function()
+      dapui.close()
+    end
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
