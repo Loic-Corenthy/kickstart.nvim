@@ -175,6 +175,9 @@ vim.o.shiftwidth = 4
 -- 4. Make <Backspace> behave like it's deleting a tab (deletes 4 spaces at once)
 vim.o.softtabstop = 4
 
+-- Colors (added to support cyberdreams theme)
+vim.o.termguicolors = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
