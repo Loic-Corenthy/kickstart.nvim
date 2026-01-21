@@ -217,7 +217,13 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+-- My keymaps
 vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Escape insert mode' })
+vim.keymap.set('n', '<space>', 'zz', { desc = 'Center the view with space key' })
+vim.keymap.set('n', 'n', 'nzz', { desc = 'Center the view when searching for next word' })
+vim.keymap.set('n', 'p', 'pzz', { desc = 'Center the view when searching for previous word' })
+vim.keymap.set('n', '-', 'ddp', { desc = 'Move current line below' })
+vim.keymap.set('n', '_', 'dd2kp', { desc = 'Move current line above' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
